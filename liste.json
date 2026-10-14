@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-14T21:47:11.620Z",
+ "updated": "2026-10-14T21:47:51.187Z",
  "cues": [
   {
    "id": "mv8ll6xf6rsi",
@@ -428,6 +428,17 @@
    "img": "https://i.scdn.co/image/ab67616d000048511e81bff9807a9e629fce5ade",
    "duration": 320357,
    "pos": 123300,
+   "label": "",
+   "cat": "Sonstige"
+  },
+  {
+   "id": "mv8n5a9i6zls",
+   "uri": "spotify:track:3YB6nCSuFqNiqOvPtAPK9X",
+   "name": "Be My Lover",
+   "artist": "La Bouche",
+   "img": "https://i.scdn.co/image/ab67616d00004851d4c3788166b9c4de0921f6b0",
+   "duration": 241133,
+   "pos": 4200,
    "label": "",
    "cat": "Sonstige"
   }
