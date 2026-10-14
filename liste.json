@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-14T21:35:13.981Z",
+ "updated": "2026-10-14T21:36:25.153Z",
  "cues": [
   {
    "id": "mv8ll6xf6rsi",
@@ -336,6 +336,17 @@
    "img": "https://i.scdn.co/image/ab67616d00004851cc829014a653007a6ce83f97",
    "duration": 168447,
    "pos": 21400,
+   "label": "",
+   "cat": "Sonstige"
+  },
+  {
+   "id": "mv8mqkx0ese7",
+   "uri": "spotify:track:59mdyQniSaNFeXaKMGu9RB",
+   "name": "Carnaval de Paris - Radio Mix",
+   "artist": "Dario G",
+   "img": "https://i.scdn.co/image/ab67616d00004851df48ee32d98ed2c1422d5804",
+   "duration": 232653,
+   "pos": 31300,
    "label": "",
    "cat": "Sonstige"
   }
