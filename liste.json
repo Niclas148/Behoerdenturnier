@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-14T21:39:30.665Z",
+ "updated": "2026-10-14T21:40:43.952Z",
  "cues": [
   {
    "id": "mv8ll6xf6rsi",
@@ -359,6 +359,17 @@
    "img": "https://i.scdn.co/image/ab67616d00004851b71557ea8911ae076ecf94fa",
    "duration": 287120,
    "pos": 15700,
+   "label": "",
+   "cat": "Sonstige"
+  },
+  {
+   "id": "mv8mw4lvs7gu",
+   "uri": "spotify:track:3GfOAdcoc3X5GPiiXmpBjK",
+   "name": "Song 2",
+   "artist": "Blur",
+   "img": "https://i.scdn.co/image/ab67616d0000485134cbf7013afccc7df67fa43f",
+   "duration": 121880,
+   "pos": 7800,
    "label": "",
    "cat": "Sonstige"
   }
