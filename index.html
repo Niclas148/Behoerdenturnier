@@ -55,6 +55,7 @@ img{max-width:100%}
 .mark{background:var(--flood);color:var(--flood-ink);border-radius:10px;padding:14px;font-family:"Barlow Condensed",system-ui,sans-serif;font-size:1.5rem;font-weight:800;width:100%}
 .mark:disabled{opacity:.45;cursor:default}
 .hint{color:var(--muted);font-size:.9rem;margin:0}
+.sync{margin:-8px 0 12px}
 
 /* Song-Liste */
 .list{display:grid;gap:24px;margin-top:12px}
@@ -141,6 +142,7 @@ a{color:var(--pitch)}
       <h1>Spieltag</h1>
       <button class="ghost" id="edit-toggle">Bearbeiten</button>
     </header>
+    <p class="hint sync" id="sync-status"></p>
 
     <div class="live">
       <div class="live-row">
@@ -159,6 +161,7 @@ a{color:var(--pitch)}
     <div class="list" id="list"></div>
 
     <div class="tools hidden" id="tools">
+      <button id="sync-btn">Sync einrichten</button>
       <button id="presets-btn">Vorschläge hinzufügen</button>
       <button id="chorus-all-btn">Refrains automatisch finden</button>
       <button id="export-btn">Liste kopieren</button>
@@ -371,7 +374,62 @@ a{color:var(--pitch)}
     } catch { toast('Keine Verbindung zu Spotify.'); }
   }
 
-  function save() { LS.set('mc_cues', cues); }
+  /* ---------- Sync über GitHub (liste.json im Repo) ---------- */
+  const onPages = location.hostname.endsWith('.github.io');
+  const GH_OWNER = onPages ? location.hostname.split('.')[0] : 'Niclas148';
+  const GH_REPO = onPages ? (location.pathname.split('/')[1] || 'Behoerdenturnier') : 'Behoerdenturnier';
+  const SYNC_URL = `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/liste.json`;
+  let ghToken = LS.get('mc_gh', '');
+  let remoteSha = null, dirty = false, syncTimer = null;
+
+  const setSync = m => { const el = $('sync-status'); if (el) el.textContent = m; };
+  const ghHeaders = () => Object.assign({ Accept: 'application/vnd.github+json' }, ghToken ? { Authorization: 'Bearer ' + ghToken } : {});
+  const enc = str => btoa(unescape(encodeURIComponent(str)));
+  const dec = b64 => decodeURIComponent(escape(atob(b64.replace(/\s/g, ''))));
+
+  async function fetchRemote() {
+    try {
+      const r = await fetch(SYNC_URL + '?t=' + Date.now(), { headers: ghHeaders(), cache: 'no-store' });
+      if (r.status === 404) return { status: 'none' };
+      if (!r.ok) return { status: 'error' };
+      const j = await r.json();
+      const data = JSON.parse(dec(j.content));
+      return Array.isArray(data.cues) ? { status: 'ok', sha: j.sha, cues: data.cues } : { status: 'error' };
+    } catch { return { status: 'error' }; }
+  }
+  function applyRemote(rem) {
+    remoteSha = rem.sha; cues = rem.cues; LS.set('mc_cues', cues); renderList();
+  }
+  function idleSyncText() {
+    setSync(ghToken ? 'Änderungen werden für alle Geräte gespeichert.'
+                    : 'Änderungen bleiben auf diesem Gerät. Für alle Geräte: Bearbeiten → Sync einrichten.');
+  }
+  async function pushRemote() {
+    if (!ghToken) return;
+    const body = { message: 'Spieltag-Liste aktualisiert', content: enc(JSON.stringify({ updated: new Date().toISOString(), cues }, null, 1)) };
+    for (let attempt = 0; attempt < 2; attempt++) {
+      if (remoteSha) body.sha = remoteSha; else delete body.sha;
+      try {
+        const r = await fetch(SYNC_URL, { method: 'PUT', headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders()), body: JSON.stringify(body) });
+        if (r.ok) { remoteSha = (await r.json()).content.sha; dirty = false; setSync('Für alle Geräte gespeichert.'); return; }
+        if (r.status === 401 || r.status === 403 || r.status === 404) { setSync('GitHub-Schlüssel ungültig oder ohne Schreibrecht. Nur auf diesem Gerät gespeichert.'); return; }
+        if (r.status === 409 || r.status === 422) { const rem = await fetchRemote(); remoteSha = rem.sha || null; continue; }
+        setSync('Sync fehlgeschlagen (Fehler ' + r.status + '). Nur auf diesem Gerät gespeichert.'); return;
+      } catch { setSync('Kein Internet. Wird hochgeladen, sobald wieder Netz da ist.'); return; }
+    }
+  }
+  async function refreshRemote() {
+    if (dirty || !tok) return;
+    const rem = await fetchRemote();
+    if (rem.status === 'ok' && rem.sha !== remoteSha && !dirty) applyRemote(rem);
+  }
+  window.addEventListener('online', () => { if (dirty) pushRemote(); });
+
+  function save() {
+    LS.set('mc_cues', cues);
+    if (ghToken) { dirty = true; setSync('Speichere …'); clearTimeout(syncTimer); syncTimer = setTimeout(pushRemote, 1500); }
+    else idleSyncText();
+  }
 
   // Vorschläge: Startstellen sind Schätzungen und werden als „prüfen“ markiert
   const CATS = ['Letzte Minute', 'Tor', 'Sieg', 'Einlauf & Pause', 'Sonstige'];
@@ -635,7 +693,23 @@ a{color:var(--pitch)}
   $('chorus-all-btn').onclick = findAllChoruses;
   $('import-btn').onclick = importList;
   $('logout-btn').onclick = () => { if (confirm('Von Spotify abmelden? Deine Liste bleibt gespeichert.')) logout(); };
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && tok) poll(); });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && tok) { poll(); refreshRemote(); } });
+  setInterval(() => { if (!document.hidden) refreshRemote(); }, 120000);
+  $('sync-btn').onclick = async () => {
+    const t = prompt('GitHub-Schlüssel einfügen (beginnt mit github_pat_).\nLeer lassen = Sync auf diesem Gerät ausschalten.', ghToken ? '(bereits eingerichtet)' : '');
+    if (t === null || t === '(bereits eingerichtet)') return;
+    ghToken = t.trim();
+    if (!ghToken) { LS.del('mc_gh'); idleSyncText(); toast('Sync auf diesem Gerät ausgeschaltet.'); return; }
+    LS.set('mc_gh', ghToken);
+    setSync('Verbinde mit GitHub …');
+    const rem = await fetchRemote();
+    if (rem.status === 'error') { setSync('GitHub nicht erreichbar oder Schlüssel falsch.'); return; }
+    if (rem.status === 'none') { remoteSha = null; dirty = true; await pushRemote(); toast('Liste hochgeladen. Andere Geräte laden sie automatisch.'); return; }
+    remoteSha = rem.sha;
+    if (confirm('Auf GitHub gibt es schon eine Liste (' + rem.cues.length + ' Songs).\n\nOK = die Liste von GitHub hier übernehmen\nAbbrechen = die Liste von diesem Gerät hochladen')) {
+      applyRemote(rem); idleSyncText();
+    } else { dirty = true; await pushRemote(); }
+  };
 
   async function init() {
     const insecure = location.protocol !== 'https:' && !['127.0.0.1', '[::1]'].includes(location.hostname);
@@ -657,9 +731,18 @@ a{color:var(--pitch)}
     if (!clientId) { show('setup'); return; }
     if (!tok) { show('login'); return; }
     show('app'); renderList(); renderLive(); startPolling();
+    setSync('Lade Liste …');
+    const rem = await fetchRemote();
+    if (rem.status === 'ok') {
+      applyRemote(rem);
+      LS.set('mc_presets_v1', true); LS.set('mc_presets_v2', true);
+    }
+    idleSyncText();
+    if (rem.status === 'error') setSync('GitHub gerade nicht erreichbar. Es wird die Liste auf diesem Gerät angezeigt.');
     await backfillDurations();
     assignCats(); renderList();
     const had1 = LS.get('mc_presets_v1', false), had2 = LS.get('mc_presets_v2', false);
+    if (rem.status === 'none' && ghToken) { dirty = true; pushRemote(); }
     if (!had2) {
       LS.set('mc_presets_v1', true); LS.set('mc_presets_v2', true);
       await addPresets(had1 ? PRESETS.filter(p => p.v === 2) : PRESETS);
