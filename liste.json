@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-14T21:39:12.299Z",
+ "updated": "2026-10-14T21:39:30.665Z",
  "cues": [
   {
    "id": "mv8ll6xf6rsi",
@@ -11,7 +11,8 @@
    "pos": 10000,
    "label": "",
    "check": false,
-   "cat": "Letzte Minute"
+   "cat": "Letzte Minute",
+   "len": 90000
   },
   {
    "id": "mv8ll75bfrhl",
