@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-14T21:31:18.554Z",
+ "updated": "2026-10-14T21:31:33.803Z",
  "cues": [
   {
    "id": "mv8ll6xf6rsi",
@@ -11,7 +11,7 @@
    "pos": 31000,
    "label": "",
    "check": false,
-   "cat": "Sieg"
+   "cat": "Letzte Minute"
   },
   {
    "id": "mv8ll75bfrhl",
@@ -23,7 +23,7 @@
    "pos": 0,
    "label": "",
    "check": false,
-   "cat": "Sieg"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8ll7e4hkl8",
@@ -35,7 +35,7 @@
    "pos": 0,
    "label": "",
    "check": false,
-   "cat": "Tor"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8ll7p9pq1u",
@@ -59,7 +59,7 @@
    "pos": 0,
    "label": "",
    "check": false,
-   "cat": "Tor"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8ll87f117v",
@@ -71,7 +71,7 @@
    "pos": 0,
    "label": "",
    "check": false,
-   "cat": "Einlauf & Pause"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8ll8i86sa0",
@@ -83,7 +83,7 @@
    "pos": 190650,
    "label": "",
    "check": false,
-   "cat": "Sieg"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8ll8q48s2a",
@@ -95,7 +95,7 @@
    "pos": 57080,
    "label": "",
    "check": false,
-   "cat": "Einlauf & Pause"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8ll923trcc",
@@ -107,7 +107,7 @@
    "pos": 52950,
    "label": "",
    "check": false,
-   "cat": "Sieg"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8ll9b1gvfd",
@@ -131,7 +131,7 @@
    "pos": 24380,
    "label": "",
    "check": false,
-   "cat": "Einlauf & Pause"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb5z8yunx",
@@ -209,7 +209,7 @@
    "label": "",
    "check": true,
    "manual": true,
-   "cat": "Tor"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb7idni1m",
@@ -222,7 +222,7 @@
    "label": "",
    "check": true,
    "manual": true,
-   "cat": "Tor"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb7qk4ez6",
@@ -235,7 +235,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Tor"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb7yq57i6",
@@ -248,7 +248,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Sieg"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb87uyghb",
@@ -261,7 +261,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Sieg"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb8ikj0wh",
@@ -274,7 +274,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Sieg"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb8tcg0jp",
@@ -287,7 +287,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Sieg"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb9bcydw7",
@@ -300,7 +300,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Einlauf & Pause"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb9m2q1h3",
@@ -313,7 +313,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Einlauf & Pause"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mig4y3dcr",
