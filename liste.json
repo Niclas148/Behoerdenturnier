@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-14T21:25:59.873Z",
+ "updated": "2026-10-14T21:28:09.488Z",
  "cues": [
   {
    "id": "mv8ll6xf6rsi",
@@ -44,7 +44,7 @@
    "artist": "Darude",
    "img": "https://i.scdn.co/image/ab67616d00004851f9ef39657ba18c612641ee6d",
    "duration": 225493,
-   "pos": 0,
+   "pos": 30000,
    "label": "",
    "check": false,
    "cat": "Letzte Minute"
