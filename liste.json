@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T06:06:05.437Z",
+ "updated": "2026-10-15T06:06:20.538Z",
  "pv": 3,
  "cues": [
   {
@@ -372,19 +372,6 @@
    "pos": 42700,
    "label": "",
    "cat": "Sonstige"
-  },
-  {
-   "id": "mv93bc7w5yik",
-   "uri": "spotify:track:4FQDZwcvvXpqpPMquZ6qTV",
-   "name": "Can't Hold Us - Live From Spotify NYC feat. Ray Dalton",
-   "artist": "Macklemore & Ryan Lewis, Ray Dalton",
-   "img": "https://i.scdn.co/image/ab67616d000048511fea2d5545035a3b26da34a2",
-   "duration": 299630,
-   "pos": 84860,
-   "label": "",
-   "check": false,
-   "manual": false,
-   "cat": "Letzte Minute"
   },
   {
    "id": "mv93bchmfpzp",
