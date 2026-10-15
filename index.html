@@ -56,6 +56,9 @@ img{max-width:100%}
 .mark:disabled{opacity:.45;cursor:default}
 .hint{color:var(--muted);font-size:.9rem;margin:0}
 .sync{margin:-8px 0 12px}
+.dev-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-top:2px solid var(--line);padding-top:12px}
+.dev-row label{font-weight:600}
+.dev-row select{flex:1;min-width:180px;font:inherit;font-weight:600;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink)}
 
 /* Song-Liste */
 .list{display:grid;gap:24px;margin-top:12px}
@@ -155,6 +158,11 @@ a{color:var(--pitch)}
       </div>
       <button class="mark" id="mark-btn" disabled>Hier merken</button>
       <p class="hint">Song in Spotify abspielen, zur richtigen Stelle spulen, dann hier auf „Hier merken“ tippen.</p>
+      <div class="dev-row">
+        <label for="dev-select">Wiedergabe auf</label>
+        <select id="dev-select"><option value="">Automatisch (zuletzt aktiv)</option></select>
+        <button class="ghost" id="dev-refresh">Aktualisieren</button>
+      </div>
     </div>
 
     <nav class="jump" id="jump" aria-label="Rubriken"></nav>
@@ -186,7 +194,9 @@ a{color:var(--pitch)}
     del(k) { try { localStorage.removeItem(k); } catch {} }
   };
 
-  let clientId = LS.get('mc_client', '');
+  // Client ID ist nicht geheim und darf fest in der Seite stehen
+  const DEFAULT_CLIENT = '1a6cce25951242f39450e1ad070f3268';
+  let clientId = LS.get('mc_client', '') || DEFAULT_CLIENT;
   let tok = LS.get('mc_tok', null);
   let cues = LS.get('mc_cues', []);
   let editing = false;
@@ -338,16 +348,56 @@ a{color:var(--pitch)}
     } catch { toast('Konnte Spotify nicht abfragen.'); }
   }
 
+  /* ---------- Wiedergabegerät ---------- */
+  let devPref = LS.get('mc_dev', null);   // {id, name} – bleibt pro Gerät, wird nicht synchronisiert
+  async function loadDevices() {
+    try {
+      const r = await api('/me/player/devices');
+      const j = r.ok ? await r.json() : {};
+      const devs = (j.devices || []).filter(d => !d.is_restricted);
+      let found = false, html = '<option value="">Automatisch (zuletzt aktiv)</option>';
+      for (const d of devs) {
+        const sel = devPref && (d.id === devPref.id || d.name === devPref.name);
+        if (sel) found = true;
+        html += `<option value="${esc(d.id)}" data-name="${esc(d.name)}"${sel ? ' selected' : ''}>${esc(d.name)}${d.is_active ? ' (aktiv)' : ''}</option>`;
+      }
+      if (devPref && !found) html += `<option value="__pref" selected>${esc(devPref.name)} (gerade nicht erreichbar)</option>`;
+      $('dev-select').innerHTML = html;
+      return devs;
+    } catch { return []; }
+  }
+  async function chooseDevice() {
+    const sel = $('dev-select'), v = sel.value;
+    if (v === '__pref') return;
+    if (!v) { devPref = null; LS.del('mc_dev'); toast('Gespielt wird auf dem zuletzt aktiven Gerät.'); return; }
+    devPref = { id: v, name: sel.selectedOptions[0].dataset.name };
+    LS.set('mc_dev', devPref);
+    try { await api('/me/player', { method: 'PUT', body: { device_ids: [v], play: false } }); } catch {}
+    toast('Wiedergabe auf: ' + devPref.name);
+    setTimeout(loadDevices, 800);
+  }
+
   async function play(cue) {
     const body = { uris: [cue.uri], position_ms: cue.pos };
+    const playOn = id => api('/me/player/play' + (id ? '?device_id=' + encodeURIComponent(id) : ''), { method: 'PUT', body });
     try {
-      let r = await api('/me/player/play', { method: 'PUT', body });
-      if (r.status === 404) {
-        const d = await api('/me/player/devices');
-        const j = await d.json().catch(() => ({}));
-        const dev = (j.devices || []).find(x => !x.is_restricted);
-        if (!dev) { toast('Kein Spotify-Gerät gefunden. Öffne kurz die Spotify-App und tippe dann nochmal.'); return; }
-        r = await api('/me/player/play?device_id=' + encodeURIComponent(dev.id), { method: 'PUT', body });
+      let r;
+      if (devPref) {
+        r = await playOn(devPref.id);
+        if (r.status === 404) {
+          const devs = await loadDevices();
+          const d = devs.find(x => x.id === devPref.id) || devs.find(x => x.name === devPref.name);
+          if (!d) { toast('„' + devPref.name + '“ ist nicht erreichbar. Öffne dort kurz die Spotify-App.'); return; }
+          devPref.id = d.id; LS.set('mc_dev', devPref);
+          r = await playOn(d.id);
+        }
+      } else {
+        r = await playOn(null);
+        if (r.status === 404) {
+          const devs = await loadDevices();
+          if (!devs.length) { toast('Kein Spotify-Gerät gefunden. Öffne kurz die Spotify-App und tippe dann nochmal.'); return; }
+          r = await playOn(devs[0].id);
+        }
       }
       if (r.ok) {
         clearActive();
@@ -394,11 +444,13 @@ a{color:var(--pitch)}
       if (!r.ok) return { status: 'error' };
       const j = await r.json();
       const data = JSON.parse(dec(j.content));
-      return Array.isArray(data.cues) ? { status: 'ok', sha: j.sha, cues: data.cues } : { status: 'error' };
+      return Array.isArray(data.cues) ? { status: 'ok', sha: j.sha, cues: data.cues, pv: data.pv } : { status: 'error' };
     } catch { return { status: 'error' }; }
   }
   function applyRemote(rem) {
-    remoteSha = rem.sha; cues = rem.cues; LS.set('mc_cues', cues); renderList();
+    remoteSha = rem.sha; cues = rem.cues; LS.set('mc_cues', cues);
+    if (typeof rem.pv === 'number') { presetVer = rem.pv; LS.set('mc_pv', presetVer); }
+    renderList();
   }
   function idleSyncText() {
     setSync(ghToken ? 'Änderungen werden für alle Geräte gespeichert.'
@@ -406,7 +458,7 @@ a{color:var(--pitch)}
   }
   async function pushRemote() {
     if (!ghToken) return;
-    const body = { message: 'Spieltag-Liste aktualisiert', content: enc(JSON.stringify({ updated: new Date().toISOString(), cues }, null, 1)) };
+    const body = { message: 'Spieltag-Liste aktualisiert', content: enc(JSON.stringify({ updated: new Date().toISOString(), pv: presetVer, cues }, null, 1)) };
     for (let attempt = 0; attempt < 2; attempt++) {
       if (remoteSha) body.sha = remoteSha; else delete body.sha;
       try {
@@ -463,8 +515,16 @@ a{color:var(--pitch)}
     { t: 'Applaus, Applaus', a: 'Sportfreunde Stiller', pos: 50000, cat: 'Sieg', v: 2 },
     { t: 'Ein Hoch auf uns', a: 'Andreas Bourani', pos: 50000, cat: 'Einlauf & Pause', v: 2 },
     { t: 'Wonderwall', a: 'Oasis', pos: 60000, cat: 'Einlauf & Pause', v: 2 },
-    { t: 'Hey Baby', a: 'DJ Ötzi', pos: 30000, cat: 'Einlauf & Pause', v: 2 }
+    { t: 'Hey Baby', a: 'DJ Ötzi', pos: 30000, cat: 'Einlauf & Pause', v: 2 },
+
+    { t: 'Lose Yourself', a: 'Eminem', pos: 60000, cat: 'Letzte Minute', v: 3 },
+    { t: 'Remember the Name', a: 'Fort Minor', pos: 30000, cat: 'Letzte Minute', v: 3 },
+    { t: "Can't Hold Us", a: 'Macklemore', pos: 30000, cat: 'Letzte Minute', v: 3 },
+    { t: 'Uprising', a: 'Muse', pos: 60000, cat: 'Letzte Minute', v: 3 },
+    { t: 'Enter Sandman', a: 'Metallica', pos: 60000, cat: 'Letzte Minute', v: 3 }
   ];
+  const LATEST_PRESETS = 3;
+  let presetVer = LS.get('mc_pv', LS.get('mc_presets_v2', false) ? 2 : LS.get('mc_presets_v1', false) ? 1 : 0);
   const presetFor = c => PRESETS.find(p => c.name.toLowerCase().includes(p.t.toLowerCase()));
   function assignCats() {
     let changed = false;
@@ -693,7 +753,9 @@ a{color:var(--pitch)}
   $('chorus-all-btn').onclick = findAllChoruses;
   $('import-btn').onclick = importList;
   $('logout-btn').onclick = () => { if (confirm('Von Spotify abmelden? Deine Liste bleibt gespeichert.')) logout(); };
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && tok) { poll(); refreshRemote(); } });
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && tok) { poll(); refreshRemote(); loadDevices(); } });
+  $('dev-select').addEventListener('change', chooseDevice);
+  $('dev-refresh').onclick = async () => { const d = await loadDevices(); toast(d.length ? d.length + ' Gerät(e) gefunden.' : 'Kein Gerät gefunden. Öffne die Spotify-App auf dem gewünschten Gerät.'); };
   setInterval(() => { if (!document.hidden) refreshRemote(); }, 120000);
   $('sync-btn').onclick = async () => {
     const t = prompt('GitHub-Schlüssel einfügen (beginnt mit github_pat_).\nLeer lassen = Sync auf diesem Gerät ausschalten.', ghToken ? '(bereits eingerichtet)' : '');
@@ -729,23 +791,33 @@ a{color:var(--pitch)}
     }
 
     if (!clientId) { show('setup'); return; }
-    if (!tok) { show('login'); return; }
+    if (!tok) {
+      show('login');
+      // automatisch zu Spotify weiterleiten (höchstens einmal pro Minute, nicht nach Fehler/Abbruch)
+      let last = 0; try { last = +sessionStorage.getItem('mc_auto') || 0; } catch {}
+      if (!q.get('error') && location.protocol !== 'file:' && Date.now() - last > 60000) {
+        try { sessionStorage.setItem('mc_auto', String(Date.now())); } catch {}
+        login();
+      }
+      return;
+    }
     show('app'); renderList(); renderLive(); startPolling();
+    loadDevices();
     setSync('Lade Liste …');
     const rem = await fetchRemote();
     if (rem.status === 'ok') {
+      if (typeof rem.pv !== 'number') rem.pv = Math.max(2, presetVer);
       applyRemote(rem);
-      LS.set('mc_presets_v1', true); LS.set('mc_presets_v2', true);
     }
     idleSyncText();
     if (rem.status === 'error') setSync('GitHub gerade nicht erreichbar. Es wird die Liste auf diesem Gerät angezeigt.');
     await backfillDurations();
     assignCats(); renderList();
-    const had1 = LS.get('mc_presets_v1', false), had2 = LS.get('mc_presets_v2', false);
     if (rem.status === 'none' && ghToken) { dirty = true; pushRemote(); }
-    if (!had2) {
-      LS.set('mc_presets_v1', true); LS.set('mc_presets_v2', true);
-      await addPresets(had1 ? PRESETS.filter(p => p.v === 2) : PRESETS);
+    if (presetVer < LATEST_PRESETS) {
+      const list = PRESETS.filter(p => p.v > presetVer);
+      presetVer = LATEST_PRESETS; LS.set('mc_pv', presetVer);
+      await addPresets(list);
       await findAllChoruses();
     }
   }
