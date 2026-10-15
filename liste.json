@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T05:47:34.724Z",
+ "updated": "2026-10-15T05:48:55.907Z",
  "pv": 3,
  "cues": [
   {
@@ -123,19 +123,6 @@
    "pos": 10380,
    "label": "",
    "check": false,
-   "cat": "Letzte Minute"
-  },
-  {
-   "id": "mv8mb5z8yunx",
-   "uri": "spotify:track:57bgtoPSgt236HzfBOd8kj",
-   "name": "Thunderstruck",
-   "artist": "AC/DC",
-   "img": "https://i.scdn.co/image/ab67616d000048519a9b1cc067e4460da04adce2",
-   "duration": 292333,
-   "pos": 28630,
-   "label": "",
-   "check": false,
-   "manual": false,
    "cat": "Letzte Minute"
   },
   {
