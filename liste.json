@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T05:50:02.256Z",
+ "updated": "2026-10-15T05:51:13.856Z",
  "pv": 3,
  "cues": [
   {
@@ -145,7 +145,7 @@
    "artist": "Survivor",
    "img": "https://i.scdn.co/image/ab67616d000048514e2755e7a96ec5e062c76aac",
    "duration": 243773,
-   "pos": 0,
+   "pos": 45000,
    "label": "",
    "check": false,
    "manual": false,
