@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T05:52:49.590Z",
+ "updated": "2026-10-15T05:52:54.273Z",
  "pv": 3,
  "cues": [
   {
@@ -159,7 +159,7 @@
    "artist": "Queen",
    "img": "https://i.scdn.co/image/ab67616d000048516c74d509c1581f8e0a35391b",
    "duration": 122134,
-   "pos": 11400,
+   "pos": 6400,
    "label": "",
    "check": false,
    "manual": false,
