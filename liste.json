@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T06:01:08.455Z",
+ "updated": "2026-10-15T06:01:11.372Z",
  "pv": 3,
  "cues": [
   {
@@ -199,7 +199,7 @@
    "artist": "SNAP!",
    "img": "https://i.scdn.co/image/ab67616d000048514c894b7dd6b2939c8c547d3d",
    "duration": 332229,
-   "pos": 106000,
+   "pos": 104000,
    "label": "",
    "check": false,
    "manual": false,
