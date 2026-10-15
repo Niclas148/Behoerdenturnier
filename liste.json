@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T06:04:17.787Z",
+ "updated": "2026-10-15T06:04:23.706Z",
  "pv": 3,
  "cues": [
   {
@@ -245,7 +245,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Tor"
+   "cat": "Sieg"
   },
   {
    "id": "mv8mb9m2q1h3",
