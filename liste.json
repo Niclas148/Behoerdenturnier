@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T06:04:23.706Z",
+ "updated": "2026-10-15T06:04:25.524Z",
  "pv": 3,
  "cues": [
   {
@@ -245,7 +245,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Sieg"
+   "cat": "Einlauf & Pause"
   },
   {
    "id": "mv8mb9m2q1h3",
