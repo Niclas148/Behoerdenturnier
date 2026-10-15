@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T05:44:13.991Z",
+ "updated": "2026-10-15T05:45:30.725Z",
  "pv": 3,
  "cues": [
   {
@@ -72,18 +72,6 @@
    "img": "https://i.scdn.co/image/ab67616d00004851ccdddd46119a4ff53eaf1f5d",
    "duration": 222973,
    "pos": 0,
-   "label": "",
-   "check": false,
-   "cat": "Letzte Minute"
-  },
-  {
-   "id": "mv8ll8i86sa0",
-   "uri": "spotify:track:2lYsCjTvXIHOqT8xSbK2jq",
-   "name": "Tage wie diese",
-   "artist": "Die Toten Hosen",
-   "img": "https://i.scdn.co/image/ab67616d00004851c48e81625cf3834bab6a9c39",
-   "duration": 268426,
-   "pos": 190650,
    "label": "",
    "check": false,
    "cat": "Letzte Minute"
