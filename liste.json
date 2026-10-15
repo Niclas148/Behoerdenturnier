@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T06:03:17.155Z",
+ "updated": "2026-10-15T06:04:14.089Z",
  "pv": 3,
  "cues": [
   {
@@ -229,19 +229,6 @@
    "img": "https://i.scdn.co/image/ab67616d000048510cb397024b7a1185c070d65a",
    "duration": 217824,
    "pos": 25220,
-   "label": "",
-   "check": false,
-   "manual": false,
-   "cat": "Letzte Minute"
-  },
-  {
-   "id": "mv8mb8tcg0jp",
-   "uri": "spotify:track:0qOZEyHXwMC5JqcUeTaPvi",
-   "name": "Applaus, Applaus",
-   "artist": "Sportfreunde Stiller",
-   "img": "https://i.scdn.co/image/ab67616d00004851e71ffb08f6b6d762bdaf5565",
-   "duration": 208760,
-   "pos": 31750,
    "label": "",
    "check": false,
    "manual": false,
