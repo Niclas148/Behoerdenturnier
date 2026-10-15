@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T06:01:14.338Z",
+ "updated": "2026-10-15T06:01:28.272Z",
  "pv": 3,
  "cues": [
   {
@@ -190,7 +190,8 @@
    "label": "",
    "check": false,
    "manual": true,
-   "cat": "Letzte Minute"
+   "cat": "Letzte Minute",
+   "len": 90000
   },
   {
    "id": "mv8mb7qk4ez6",
@@ -203,7 +204,8 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Letzte Minute"
+   "cat": "Letzte Minute",
+   "len": 90000
   },
   {
    "id": "mv8mb7yq57i6",
