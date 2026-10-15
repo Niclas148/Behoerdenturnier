@@ -1,5 +1,6 @@
 {
- "updated": "2026-10-14T21:50:32.485Z",
+ "updated": "2026-10-15T05:37:03.596Z",
+ "pv": 3,
  "cues": [
   {
    "id": "mv8ll6xf6rsi",
@@ -12,7 +13,7 @@
    "label": "",
    "check": false,
    "cat": "Letzte Minute",
-   "len": 90000
+   "len": 75000
   },
   {
    "id": "mv8ll75bfrhl",
@@ -33,7 +34,7 @@
    "artist": "Zombie Nation",
    "img": "https://i.scdn.co/image/ab67616d00004851916e34ccc44c2b56cdd0d7e4",
    "duration": 285173,
-   "pos": 0,
+   "pos": 62600,
    "label": "",
    "check": false,
    "cat": "Letzte Minute"
@@ -233,7 +234,7 @@
    "artist": "SNAP!",
    "img": "https://i.scdn.co/image/ab67616d000048514c894b7dd6b2939c8c547d3d",
    "duration": 332229,
-   "pos": 47190,
+   "pos": 29190,
    "label": "",
    "check": false,
    "manual": false,
@@ -259,7 +260,7 @@
    "artist": "Andreas Bourani",
    "img": "https://i.scdn.co/image/ab67616d0000485177dabc857505b1ec2ccf963e",
    "duration": 240600,
-   "pos": 35240,
+   "pos": 23240,
    "label": "",
    "check": false,
    "manual": false,
@@ -442,6 +443,71 @@
    "pos": 42700,
    "label": "",
    "cat": "Sonstige"
+  },
+  {
+   "id": "mv93bbosshpn",
+   "uri": "spotify:track:5Z01UMMf7V1o0MzF86s6WJ",
+   "name": "Lose Yourself",
+   "artist": "Eminem",
+   "img": "https://i.scdn.co/image/ab67616d00004851eab40fc794b88b9d1e012578",
+   "duration": 326466,
+   "pos": 98280,
+   "label": "",
+   "check": false,
+   "manual": false,
+   "cat": "Letzte Minute"
+  },
+  {
+   "id": "mv93bbxhcu9h",
+   "uri": "spotify:track:6ndmKwWqMozN2tcZqzCX4K",
+   "name": "Remember the Name (feat. Styles of Beyond)",
+   "artist": "Fort Minor, Styles Of Beyond",
+   "img": "https://i.scdn.co/image/ab67616d00004851617b7d3433ff3a447faa7c08",
+   "duration": 230493,
+   "pos": 22090,
+   "label": "",
+   "check": false,
+   "manual": false,
+   "cat": "Letzte Minute"
+  },
+  {
+   "id": "mv93bc7w5yik",
+   "uri": "spotify:track:4FQDZwcvvXpqpPMquZ6qTV",
+   "name": "Can't Hold Us - Live From Spotify NYC feat. Ray Dalton",
+   "artist": "Macklemore & Ryan Lewis, Ray Dalton",
+   "img": "https://i.scdn.co/image/ab67616d000048511fea2d5545035a3b26da34a2",
+   "duration": 299630,
+   "pos": 84860,
+   "label": "",
+   "check": false,
+   "manual": false,
+   "cat": "Letzte Minute"
+  },
+  {
+   "id": "mv93bchmfpzp",
+   "uri": "spotify:track:4VqPOruhp5EdPBeR92t6lQ",
+   "name": "Uprising",
+   "artist": "Muse",
+   "img": "https://i.scdn.co/image/ab67616d00004851b6d4566db0d12894a1a3b7a2",
+   "duration": 304840,
+   "pos": 60000,
+   "label": "",
+   "check": true,
+   "manual": false,
+   "cat": "Letzte Minute"
+  },
+  {
+   "id": "mv93bcrvp2f8",
+   "uri": "spotify:track:3DwQ7AH3xGD9h65ezslm6q",
+   "name": "Enter Sandman - Remastered 2021",
+   "artist": "Metallica",
+   "img": "https://i.scdn.co/image/ab67616d00004851c1a13209dfe146aef3296e34",
+   "duration": 331560,
+   "pos": 86389.99999999999,
+   "label": "",
+   "check": false,
+   "manual": false,
+   "cat": "Letzte Minute"
   }
  ]
 }
