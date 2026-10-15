@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T06:04:25.524Z",
+ "updated": "2026-10-15T06:04:28.105Z",
  "pv": 3,
  "cues": [
   {
@@ -245,7 +245,7 @@
    "label": "",
    "check": false,
    "manual": false,
-   "cat": "Einlauf & Pause"
+   "cat": "Sonstige"
   },
   {
    "id": "mv8mb9m2q1h3",
