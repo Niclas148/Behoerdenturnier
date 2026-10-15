@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-15T06:02:43.004Z",
+ "updated": "2026-10-15T06:02:48.355Z",
  "pv": 3,
  "cues": [
   {
@@ -214,7 +214,7 @@
    "artist": "Andreas Bourani",
    "img": "https://i.scdn.co/image/ab67616d0000485177dabc857505b1ec2ccf963e",
    "duration": 240600,
-   "pos": 20240,
+   "pos": 15240,
    "label": "",
    "check": false,
    "manual": false,
