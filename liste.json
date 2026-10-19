@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-19T13:00:28.570Z",
+ "updated": "2026-10-19T13:00:35.638Z",
  "pv": 3,
  "cues": [
   {
@@ -269,7 +269,7 @@
    "duration": 168447,
    "pos": 21400,
    "label": "",
-   "cat": "Sonstige"
+   "cat": "Letzte Minute"
   },
   {
    "id": "mv8mqkx0ese7",
@@ -280,7 +280,7 @@
    "duration": 232653,
    "pos": 31300,
    "label": "",
-   "cat": "Sonstige"
+   "cat": "Letzte Minute"
   },
   {
    "id": "mv8mrrf003cw",
@@ -291,7 +291,7 @@
    "duration": 287120,
    "pos": 15700,
    "label": "",
-   "cat": "Sonstige"
+   "cat": "Letzte Minute"
   },
   {
    "id": "mv8mw4lvs7gu",
