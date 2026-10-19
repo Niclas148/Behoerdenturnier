@@ -399,6 +399,13 @@ a{color:var(--pitch)}
           r = await playOn(devs[0].id);
         }
       }
+      // 502/503: Spotify erreicht das Gerät gerade nicht -> Gerät „aufwecken“ und nochmal versuchen
+      for (let i = 0; i < 2 && (r.status === 502 || r.status === 503); i++) {
+        const target = devPref ? devPref.id : null;
+        if (target) { try { await api('/me/player', { method: 'PUT', body: { device_ids: [target], play: false } }); } catch {} }
+        await new Promise(res => setTimeout(res, 1200));
+        r = await playOn(target);
+      }
       if (r.ok) {
         clearActive();
         const len = lenOf(cue);
@@ -406,6 +413,7 @@ a{color:var(--pitch)}
         setTimeout(poll, 600); return;
       }
       if (r.status === 403) toast('Spotify lässt die Wiedergabe nicht zu. Ist Premium aktiv?');
+      else if (r.status === 502 || r.status === 503) toast('Spotify erreicht das Gerät gerade nicht. Öffne dort kurz die Spotify-App, drück einmal Play/Pause und tippe nochmal.');
       else toast('Abspielen hat nicht geklappt (Fehler ' + r.status + ').');
     } catch { toast('Keine Verbindung zu Spotify.'); }
   }
