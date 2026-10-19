@@ -1,5 +1,5 @@
 {
- "updated": "2026-10-19T13:00:18.853Z",
+ "updated": "2026-10-19T13:00:24.921Z",
  "pv": 3,
  "cues": [
   {
@@ -428,7 +428,7 @@
    "duration": 41657,
    "pos": 0,
    "label": "",
-   "cat": "Letzte Minute",
+   "cat": "Sieg",
    "check": false
   }
  ]
