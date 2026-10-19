@@ -146,6 +146,7 @@ a{color:var(--pitch)}
       <button class="ghost" id="edit-toggle">Bearbeiten</button>
     </header>
     <p class="hint sync" id="sync-status"></p>
+    <p class="hint sync" id="me-line"></p>
 
     <div class="live">
       <div class="live-row">
@@ -837,6 +838,9 @@ a{color:var(--pitch)}
     }
     show('app'); renderList(); renderLive(); startPolling();
     loadDevices();
+    api('/me').then(r => r.ok ? r.json() : null).then(me => {
+      if (me) $('me-line').textContent = 'Angemeldet bei Spotify als: ' + (me.display_name || me.id);
+    }).catch(() => {});
     setSync('Lade Liste …');
     const rem = await fetchRemote();
     if (rem.status === 'ok') {
